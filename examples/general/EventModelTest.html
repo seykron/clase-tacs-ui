@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+ 
+<html>
+  <head>
+    <title>DOM Event Bubbling Test</title>
+  </head>
+  <body>
+    <div id="toolbar">
+      <a id="edit" href="#">Edit</a>
+      <a id="delete" href="#">Delete</a>
+    </div> 
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function (event) {
+        var toolbar = document.getElementById("toolbar");
+        var editAction = document.getElementById("edit");
+        var deleteAction = document.getElementById("delete");
+
+        toolbar.addEventListener("click", function (event) {
+          alert("Event bubbled!");
+        });
+        editAction.addEventListener("click", function (event) {
+          alert("I will bubble");
+        });
+        deleteAction.addEventListener("click", function (event) {
+          alert("You shall not bubble!");
+          event.stopPropagation();
+        });
+
+      });
+    </script>
+  </body>
+</html>

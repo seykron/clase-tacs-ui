@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+ 
+<html>
+  <head>
+    <title>Widget test</title>
+  </head>
+  <body>
+    <div id="js-toolbar-email">
+      <a class="js-action-edit" href="javascript:void(0)">Edit</a>
+      <a class="js-action-delete" href="javascript:void(0)">Delete</a>
+    </div>
+    <div id="js-toolbar-docs">
+      <!-- This will be dynamically rendered. -->
+    </div>
+    <script id="toolbar-item-tpl" type="html/template">
+      <a class="js-action-${key}" href="javascript:void(0)">${label}</a>
+    </script>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function (event) {
+        var Toolbar = function (toolbar, name, rawActions) {
+
+          var addActionListener = function (actionContainer, actionData) {
+            actionContainer.addEventListener("click", function (event) {
+              alert(actionData.description.replace("${name}", name));
+            });
+          };
+
+          var renderDynamicItem = function (actionData) {
+            var template = document.getElementById("toolbar-item-tpl").innerHTML;
+            var newItem = document.createElement("span");
+
+            newItem.innerHTML = template.replace("${key}", actionData.key)
+              .replace("${label}", actionData.label);
+            toolbar.appendChild(newItem);
+
+            return toolbar.getElementsByClassName("js-action-" + actionData.key);
+          };
+
+          return {
+            render: function () {
+              var actionContainer;
+
+              for (var i = 0; i < rawActions.length; i++) {
+                actionContainer = toolbar.getElementsByClassName("js-action-" +
+                  rawActions[i].key);
+
+                if (actionContainer.length === 0) {
+                  // Not in the DOM, let's create it.
+                  actionContainer = renderDynamicItem(rawActions[i]);
+                }
+                addActionListener(actionContainer[0], rawActions[i]);
+              }
+            }
+          };
+        };
+
+        // Actions is the data structure provided by the server.
+        var ACTIONS = [{
+          key: "edit",
+          label: "Edit",
+          description: "I edit your ${name}."
+        }, {
+          key: "delete",
+          label: "Delete",
+          description: "I delete your ${name}."
+        }, {
+          key: "compose",
+          label: "Create",
+          description: "I write a new ${name} for you."
+        }];
+
+        var toolbar1 = new Toolbar(document.getElementById("js-toolbar-email"),
+          "email", ACTIONS);
+        var toolbar2 = new Toolbar(document.getElementById("js-toolbar-docs"),
+          "document", ACTIONS);
+        toolbar1.render();
+        toolbar2.render();
+      });
+    </script>
+  </body>
+</html>

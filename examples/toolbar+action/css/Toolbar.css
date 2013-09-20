@@ -1,0 +1,29 @@
+/** Toolbar container */
+.toolbar {
+  border: 1px solid #666666;
+  padding: 4px;
+}
+
+/** Toolbar action. */
+.toolbar .action {
+  background: url(../image/toolbar.gif) no-repeat 0 0;
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+}
+
+/** Toolbar edit action. */
+.toolbar .action.edit {
+  background-position: -9px -10px;
+}
+
+/** Toolbar delete action. */
+.toolbar .action.delete {
+  background-position: -263px -10px;
+}
+
+/** Toolbar create action. */
+.toolbar .action.create {
+  background-position: -9px -106px;
+}
+

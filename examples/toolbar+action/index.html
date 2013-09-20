@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+ 
+<html>
+  <head>
+    <title>Widget test</title>
+    <link rel="stylesheet" href="css/Toolbar.css" />
+  </head>
+  <body>
+    <div class="toolbar" id="js-toolbar-email">
+      <a class="action edit js-action-edit" href="javascript:void(0)"><!-- Edit action --></a>
+      <a class="action delete js-action-delete" href="javascript:void(0)"><!-- Delete action --></a>
+    </div>
+    <div class="toolbar" id="js-toolbar-docs">
+      <!-- This will be dynamically rendered. -->
+    </div>
+    <script id="toolbar-item-tpl" type="html/template">
+      <a class="action ${key} js-action-${key}" href="javascript:void(0)">
+        <!-- Action ${key} -->
+      </a>
+    </script>
+    <script type="text/javascript" src="js/Toolbar.js"></script>
+    <script type="text/javascript" src="js/ToolbarAction.js"></script>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function (event) {
+        // Actions is the data structure provided by the server.
+        var ACTIONS = [{
+          key: "edit",
+          label: "Edit",
+          description: "I edit your ${name}."
+        }, {
+          key: "delete",
+          label: "Delete",
+          description: "I delete your ${name}."
+        }, {
+          key: "create",
+          label: "Create",
+          description: "I write a new ${name} for you."
+        }];
+
+        var toolbar1 = new Toolbar(document.getElementById("js-toolbar-email"),
+          "email", ACTIONS);
+        var toolbar2 = new Toolbar(document.getElementById("js-toolbar-docs"),
+          "document", ACTIONS);
+        toolbar1.render();
+        toolbar2.render();
+      });
+    </script>
+  </body>
+</html>

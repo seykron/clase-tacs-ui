@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>DOM Binding Test</title>
+  </head>
+  <body>
+    <button id="action">Submit!</button>
+
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function (event) {
+        var button = document.getElementById("action");
+
+        button.addEventListener("click", function (event) {
+          button.style.backgroundColor = "#000000";
+          button.style.color = "#ffffff";    
+        });
+      });
+    </script>
+  </body>
+</html>

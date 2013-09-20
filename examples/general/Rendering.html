@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+ 
+<html>
+  <head>
+    <title>Rendering test</title>
+  </head>
+  <body>
+    <div id="js-toolbar">
+      <a class="js-action-edit" href="javascript:void(0)">Edit</a>
+      <a class="js-action-delete" href="javascript:void(0)">Delete</a>
+    </div>
+    <script id="toolbar-item-tpl" type="html/template">
+      <a class="js-action-${key}" href="javascript:void(0)">${label}</a>
+    </script>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function (event) {
+        var addActionListener = function (actionContainer, actionData) {
+          actionContainer.addEventListener("click", function (event) {
+            alert(actionData.description);
+          });
+        };
+
+        var renderDynamicItem = function (actionData) {
+          var template = document.getElementById("toolbar-item-tpl").innerHTML;
+          var toolbar = document.getElementById("js-toolbar");
+          var newItem = document.createElement("span");
+
+          newItem.innerHTML = template.replace("${key}", actionData.key)
+            .replace("${label}", actionData.label);
+          toolbar.appendChild(newItem);
+
+          return toolbar.getElementsByClassName("js-action-" + actionData.key);
+        };
+
+        var initialize = function (rawActions) {
+          var toolbar = document.getElementById("js-toolbar");
+          var actionContainer;
+
+          for (var i = 0; i < rawActions.length; i++) {
+            actionContainer = toolbar.getElementsByClassName("js-action-" +
+              rawActions[i].key);
+
+            if (actionContainer.length === 0) {
+              // Not in the DOM, let's create it.
+              actionContainer = renderDynamicItem(rawActions[i]);
+            }
+            addActionListener(actionContainer[0], rawActions[i]);
+          }
+        };
+
+        // Data structure provided by the server.
+        var ACTIONS = [{
+          key: "edit",
+          label: "Edit email",
+          description: "I edit your email."
+        }, {
+          key: "delete",
+          label: "Delete email",
+          description: "I delete your email."
+        }, {
+          key: "compose",
+          label: "Create email",
+          description: "I write a new email for you."
+        }];
+
+        initialize(ACTIONS);
+      });
+    </script>
+  </body>
+</html>
